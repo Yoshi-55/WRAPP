@@ -71,3 +71,6 @@ Thumbs.db
 
 # Docker override (個人設定)
 docker-compose.override.yml
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
