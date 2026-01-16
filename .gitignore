@@ -1,6 +1,61 @@
 # Ignore docs directory
 /docs/
 
+# Environment variables
+.env
+.env.local
+.env*.local
+.env.production
+
+# Database
+*.sqlite3
+*.sqlite3-*
+
+# Logs
+*.log
+log/*
+
+# Temporary files
+tmp/*
+tmp/cache
+tmp/pids
+tmp/sockets
+tmp/storage
+
+# Storage uploads
+/storage/*
+!/storage/.keep
+
+# Public uploads
+/public/uploads
+/public/packs
+/public/assets
+
+# Node modules
+node_modules/
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Yarn
+yarn-error.log
+
+# Ruby / Bundler
+.bundle/
+/vendor/bundle
+
+# Coverage
+/coverage/
+
+# RSpec
+/spec/tmp/
+/spec/examples.txt
+
+# Test
+/test/tmp/
+
+# Cache
+.cache/
+
 # macOS
 .DS_Store
 
@@ -11,8 +66,8 @@
 *.swo
 *~
 
-# Logs
-*.log
+# Windows
+Thumbs.db
 
-# Temporary files
-tmp/
+# Docker override (個人設定)
+docker-compose.override.yml

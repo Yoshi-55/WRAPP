@@ -89,15 +89,16 @@ git clone <repository-url>
 cd wrapp
 
 # Docker環境のビルド
-docker-compose build
+docker compose build
+
+# 依存関係のインストール
+docker compose run --rm web bundle install
 
 # データベースのセットアップ
-docker-compose run web rails db:create
-docker-compose run web rails db:migrate
-docker-compose run web rails db:seed
+docker compose run --rm web bin/rails db:prepare
 
 # 開発サーバーの起動
-docker-compose up
+docker compose up
 
 # ブラウザでアクセス
 # http://localhost:3000
@@ -107,39 +108,57 @@ docker-compose up
 
 ```bash
 # コンテナの起動
-docker-compose up
+docker compose up
 
 # バックグラウンドで起動
-docker-compose up -d
+docker compose up -d
 
 # コンテナの停止
-docker-compose down
+docker compose down
 
 # Railsコンソール
-docker-compose run web rails console
+docker compose exec web bin/rails console
 
 # マイグレーション実行
-docker-compose run web rails db:migrate
+docker compose exec web bin/rails db:migrate
 
 # テスト実行
-docker-compose run web rspec
+docker compose exec web bin/rails test
 
-# Gemのインストール
-docker-compose run web bundle install
-docker-compose build  # 再ビルドが必要
+# Gemのインストール（Gemfile変更時）
+docker compose run --rm web bundle install
+docker compose restart web
 
 # コンテナに入る
-docker-compose exec web bash
+docker compose exec web bash
 ```
 
 ### Docker構成
 
+#### 開発環境（compose.yml）
 ```yaml
 services:
-  web:      # Rails 7.1
-  db:       # PostgreSQL 16
-  redis:    # Redis (キャッシュ/ジョブキュー)
+  db:       # PostgreSQL 16-alpine (port: 5433)
+  redis:    # Redis 7-alpine (port: 6380)
+  web:      # Rails 7.1 (development, port: 3000)
 ```
+
+#### 本番環境（compose.prod.yml）
+```bash
+# 本番環境での起動
+docker compose -f compose.prod.yml build
+docker compose -f compose.prod.yml up -d
+```
+
+### マルチステージDockerfile
+
+```
+base → development (開発用)
+    → production  (本番用)
+```
+
+- **development**: ホットリロード、デバッグツール含む
+- **production**: 最適化、非root実行、セキュア
 
 ---
 
