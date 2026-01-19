@@ -6,6 +6,6 @@
   }
   
   .sidebar-link {
-    @apply text-2xl font-bold flex items-center px-3 py-2 mb-1 text-gray-700 rounded-md hover:bg-gray-100;
+    @apply text-2xl font-bold flex items-center gap-3 px-3 py-2 mb-1 text-gray-700 rounded-md hover:bg-gray-100;
   }
 }
