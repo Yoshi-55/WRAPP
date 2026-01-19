@@ -1,0 +1,15 @@
+<header class="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-50">
+  <div class="h-full flex items-center justify-between px-6">
+    <%= link_to root_path do %>
+      <h1 class="logo">
+        WRAPP
+      </h1>
+    <% end %>
+
+    <div class="flex gap-4">
+      <%= link_to "ログイン", "#", class: "px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50" %>
+      <%= link_to "新規登録", "#", class: "px-4 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600" %>
+    </div>
+  </div>
+</header>
+
