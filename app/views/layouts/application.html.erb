@@ -14,6 +14,22 @@
     <%= render 'shared/header' %>
     <%= render 'shared/sidebar' %>
 
+    <%# フラッシュメッセージ %>
+    <% if notice.present? %>
+      <div class="ml-64 pt-16 px-6">
+        <div class="flash-notice">
+          <%= notice %>
+        </div>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="ml-64 pt-16 px-6">
+        <div class="flash-alert">
+          <%= alert %>
+        </div>
+      </div>
+    <% end %>
+
     <!-- メインコンテンツ -->
     <main class="ml-64 pt-16 min-h-screen">
       <div class="p-6">
