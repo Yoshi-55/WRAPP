@@ -41,6 +41,10 @@ gem "jbuilder"
 # 認証
 gem "devise", "~> 4.9"
 
+# 国際化
+gem "rails-i18n", "~> 7.0"
+gem "devise-i18n"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 

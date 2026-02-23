@@ -6,9 +6,15 @@
       </h1>
     <% end %>
 
-    <div class="flex gap-4">
-      <%= link_to "ログイン", "#", class: "px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50" %>
-      <%= link_to "新規登録", "#", class: "px-4 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600" %>
+    <div class="flex items-center gap-4">
+      <% if user_signed_in? %>
+        <span class="text-gray-700"><%= current_user.name %>：<%= current_user.role %></span>
+        <%= link_to "アカウント設定", edit_user_registration_path, class: "px-4 py-2 text-gray-700 hover:text-gray-900" %>
+        <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50" %>
+      <% else %>
+        <%= link_to "ログイン", new_user_session_path, class: "px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50" %>
+        <%= link_to "新規登録", new_user_registration_path, class: "px-4 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600" %>
+      <% end %>
     </div>
   </div>
 </header>
