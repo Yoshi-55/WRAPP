@@ -38,6 +38,13 @@ gem "jbuilder"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
+# 認証
+gem "devise", "~> 4.9"
+
+# 国際化
+gem "rails-i18n", "~> 7.0"
+gem "devise-i18n"
+
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -65,6 +72,7 @@ end
 group :development do
   gem "bullet"
   gem "letter_opener"
+  gem "letter_opener_web"
   gem "web-console"
 end
 
