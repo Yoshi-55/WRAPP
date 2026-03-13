@@ -1,0 +1,190 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">施工案件詳細</h1>
+    <div class="space-x-2">
+      <%= link_to "一覧に戻る", jobs_path, class: "px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50" %>
+      <%= link_to "編集", edit_job_path(@job), class: "px-4 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600" %>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">案件番号</h3>
+        <p class="text-lg font-semibold text-gray-900"><%= @job.job_serial %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">ステータス</h3>
+        <% status_class = case @job.status
+             when "draft" then "bg-gray-100 text-gray-800"
+             when "in_progress" then "bg-blue-100 text-blue-800"
+             when "completed" then "bg-green-100 text-green-800"
+             when "cancelled" then "bg-red-100 text-red-800"
+             end %>
+        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= status_class %>">
+          <% status_text = case @job.status
+               when "draft" then "下書き"
+               when "in_progress" then "施工中"
+               when "completed" then "完了"
+               when "cancelled" then "キャンセル"
+               end %>
+          <%= status_text %>
+        </span>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">メーカー</h3>
+        <p class="text-lg text-gray-900"><%= @job.maker.name %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">担当者</h3>
+        <p class="text-lg text-gray-900"><%= @job.owner.name %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">車名</h3>
+        <p class="text-lg text-gray-900"><%= @job.vehicle_name %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">グレード</h3>
+        <p class="text-lg text-gray-900"><%= @job.vehicle_model %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">年式</h3>
+        <p class="text-lg text-gray-900"><%= @job.car_year %>年</p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">車両カラー</h3>
+        <p class="text-lg text-gray-900"><%= @job.car_color %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">顧客名</h3>
+        <p class="text-lg text-gray-900"><%= @job.customer_name %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">顧客電話番号</h3>
+        <p class="text-lg text-gray-900"><%= @job.customer_phone %></p>
+      </div>
+      <div>
+        <h3 class="text-sm font-medium text-gray-500 mb-1">予定日</h3>
+        <p class="text-lg text-gray-900"><%= @job.scheduled_at&.strftime("%Y年%m月%d日") %></p>
+      </div>
+      <% if @job.completed_at.present? %>
+        <div>
+          <h3 class="text-sm font-medium text-gray-500 mb-1">完了日</h3>
+          <p class="text-lg text-gray-900"><%= @job.completed_at.strftime("%Y年%m月%d日") %></p>
+        </div>
+      <% end %>
+    </div>
+    <% if @job.note.present? %>
+      <div class="mt-6">
+        <h3 class="text-sm font-medium text-gray-500 mb-1">備考</h3>
+        <p class="text-gray-900 whitespace-pre-wrap"><%= @job.note %></p>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">作業記録</h2>
+    <% if @work_logs.any? %>
+      <div class="space-y-4">
+        <% @work_logs.each do |work_log| %>
+          <div class="border-l-4 border-cyan-500 pl-4 py-2">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm text-gray-500">
+                  <%= work_log.started_at.strftime("%Y/%m/%d %H:%M") %>
+                  <% if work_log.ended_at.present? %>
+                    〜 <%= work_log.ended_at.strftime("%H:%M") %>
+                    <span class="text-cyan-600 font-medium">(<%= work_log.duration_minutes %>分)</span>
+                  <% end %>
+                </p>
+                <p class="text-gray-900 mt-1"><%= work_log.user.name %></p>
+                <% if work_log.note.present? %>
+                  <p class="text-gray-700 mt-2 whitespace-pre-wrap"><%= work_log.note %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500">作業記録がまだありません。</p>
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">材料使用記録</h2>
+    <% if @material_usages.any? %>
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">材料名</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">使用量</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">廃棄量</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @material_usages.each do |usage| %>
+            <tr>
+              <td class="px-6 py-4 whitespace-nowrap"><%= usage.material.name %></td>
+              <td class="px-6 py-4 whitespace-nowrap"><%= usage.used_length_m %>m</td>
+              <td class="px-6 py-4 whitespace-nowrap"><%= usage.waste_length_m %>m</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="text-gray-500">材料使用記録がまだありません。</p>
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">施工写真</h2>
+    <% if @job_photos.any? %>
+      <div class="grid grid-cols-3 gap-4">
+        <% @job_photos.each do |photo| %>
+          <div class="border rounded-lg p-2">
+            <% if photo.image_url.present? %>
+              <%= image_tag photo.image_url, class: "w-full h-48 object-cover rounded" %>
+            <% else %>
+              <div class="w-full h-48 bg-gray-200 rounded flex items-center justify-center">
+                <span class="text-gray-400">画像なし</span>
+              </div>
+            <% end %>
+            <p class="text-sm text-gray-600 mt-2">
+              <% photo_type_text = case photo.photo_type
+                   when "before" then "施工前"
+                   when "during" then "施工中"
+                   when "after" then "施工後"
+                   end %>
+              <%= photo_type_text %>
+            </p>
+            <% if photo.note.present? %>
+              <p class="text-sm text-gray-500 mt-1"><%= photo.note %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500">施工写真がまだありません。</p>
+    <% end %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">履歴</h2>
+    <% if @job_histories.any? %>
+      <div class="space-y-2">
+        <% @job_histories.each do |history| %>
+          <div class="flex items-start">
+            <span class="text-sm text-gray-500 w-40"><%= history.created_at.strftime("%Y/%m/%d %H:%M") %></span>
+            <span class="text-sm text-gray-900"><%= history.action_type %></span>
+            <% if history.note.present? %>
+              <span class="text-sm text-gray-600 ml-2"><%= history.note %></span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500">履歴がまだありません。</p>
+    <% end %>
+  </div>
+</div>

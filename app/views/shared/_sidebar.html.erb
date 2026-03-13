@@ -1,12 +1,24 @@
 <div class="fixed top-16 bottom-0 left-0 w-64 bg-white border-r border-gray-200 overflow-y-auto">
   <nav class="py-4 px-3">
-    <a href="#" class="sidebar-link">
+    <%= link_to jobs_path, class: "sidebar-link" do %>
       <span class="material-symbols-outlined">list_alt</span>
-      施工一覧
+      施工案件
+    <% end %>
+    <a href="#" class="sidebar-link">
+      <span class="material-symbols-outlined">schedule</span>
+      作業記録
     </a>
     <a href="#" class="sidebar-link">
-      <span class="material-symbols-outlined">add_circle</span>
-      施工登録
+      <span class="material-symbols-outlined">photo_camera</span>
+      施工写真
+    </a>
+    <a href="#" class="sidebar-link">
+      <span class="material-symbols-outlined">inventory_2</span>
+      材料管理
+    </a>
+    <a href="#" class="sidebar-link">
+      <span class="material-symbols-outlined">directions_car</span>
+      メーカー管理
     </a>
   </nav>
 </div>
